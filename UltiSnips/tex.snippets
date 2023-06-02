@@ -6,7 +6,7 @@ snippet beg "begin{} / end{}" bA
 endsnippet
 
 #fraction
-snippet f; "\frac{}{}" iA
+snippet f; "\frac{}{}" A
 \frac{$1}{$2}$0
 endsnippet
 
@@ -33,23 +33,47 @@ snippet // "Fraction" iA
 \\frac{${VISUAL}}{$1}$0
 endsnippet
 
-#bold and italicize
-snippet bld "bold" iA
+#fonts
+snippet bld "bold" A
 \textbf{$1}$0
 endsnippet
 
-snippet itc "italicize" iA
+snippet itc "italicize" A
 \textit{$1}$0
 endsnippet
 
+snippet mcal "mathcal" iA
+\mathcal{$1}$0
+endsnippet
+
+snippet -> "to" iA
+\to
+endsnippet
+
 #integral with limits 
-snippet ii "\int_{}^{}" iA
-\int_{$1}^{$2}$0
+
+priority 10
+snippet ii "\int_{} tab" i
+\int_{$1}$0
+endsnippet
+
+priority 100
+snippet "([^\{i])ii" "\int_{} auto" riA
+`!p snip.rv = match.group(1)`\int_{$1}$0
+endsnippet
+
+#partial
+snippet prt "partial" iA
+\\frac{\partial $1}{\partial $2}$0
 endsnippet
 
 #sum with limits
-snippet ss "\sum\limits_{}^{}" i
-\sum\limits_{$1}^{$2}$0
+snippet ss "\sum\limits_{}" A
+\sum\limits_{$1}$0
+endsnippet
+
+snippet ss "\sum\limits_{} tab" i
+\sum\limits_{$1}$0
 endsnippet
 
 #inline math with smart detection
@@ -63,7 +87,29 @@ else:
 endsnippet
 
 snippet mj "make brackets" iA
-\\{ $1 \\}$0
+\\{$1\\}$0
+endsnippet
+
+snippet mss "inline brackets" iA
+$\\{${1}\\}$`!p
+if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
+    snip.rv = ' '
+else:
+    snip.rv = ''
+`$2
+endsnippet
+
+snippet bg "bigg ({[" iA
+\bigg$1 $2\bigg`!p
+if t[1] == '{':
+	snip.rv = '}'
+elif t[1] == '(':
+	snip.rv = ')'
+elif t[1] == '[':
+	snip.rv = ']'
+else:
+	snip.rv = ''
+`$0
 endsnippet
 
 #normal text
@@ -84,12 +130,16 @@ snippet sr; "^2" iA
 ^2
 endsnippet
 
-snippet sr' "\sqrt{}[]" iA
-\sqrt[$2]{$1}$0
+snippet sr' "\sqrt{}" iA
+\sqrt{${1:${VISUAL}}}$0
 endsnippet
 
 snippet cb "^3" iA
 ^3
+endsnippet
+
+snippet invs "inverse" iA
+^{-1}
 endsnippet
 
 #snippet cmpl "complement" iA
@@ -104,35 +154,88 @@ snippet s; "subscript" iA
 _{$1}$0
 endsnippet
 
-#bigg paren
-snippet bgg "bigg ({[" iA
-\bigg$1 $3 \bigg$2$0
+#logic
+
+snippet =- "implies" iA
+\implies
 endsnippet
+
+snippet -= "implied by" iA
+\impliedby
+endsnippet
+
+snippet === "iff" iA
+\iff
+endsnippet
+
+snippet neq "not equal" iA
+\neq
+endsnippet
+
+snippet leq "less equal" iA
+\leq
+endsnippet
+
+snippet geq "greater equal" iA
+\geq
+endsnippet
+
+#conjugate
+snippet bar "overbar" A
+\overline{$1}$0
+endsnippet
+
+#hat
+priority 10
+snippet "hat" "hat" riA
+\hat{$1}$0
+endsnippet
+
+priority 100
+snippet "([a-zA-Z])hat" "hat" riA
+\hat{`!p snip.rv = match.group(1)`}
+endsnippet
+
+#twid
+priority 10
+snippet "twd" "twiddle" riA
+\tilde{$1}$0
+endsnippet
+
+priority 100
+snippet "([a-zA-z])twd" "twiddle" riA
+\hat{`!p snip.rv = match.group(1)`}
+endsnippet
+
+#bigg paren
+#snippet bg "bigg ({[" A
+#\bigg$1 $3 \bigg$2$0
+#endsnippet
 
 #create align/equation environments
-snippet eqn "Equation without a number" bi
+snippet eq "Equation without a number" b
 \begin{equation*}
-	${0:${VISUAL}}
-\end{equation*}
+	${1:${VISUAL:}}
+\end{equation*}$0
 endsnippet
 
 
-snippet eq "Equation with number" bi
+snippet eqn "Equation with number" b
 \begin{equation}
-	${0:${VISUAL}}
-\end{equation}
+	${1:${VISUAL:}}
+\end{equation}$0
 endsnippet
 
-snippet al "Align" bi
+snippet aln "Align" b
 \begin{align}
-	${0:${VISUAL}}
-\end{align}
+	${1:${VISUAL:}}
+\end{align}$0
 endsnippet
 
-snippet aln "Align without a number" bi
+snippet al "Align without a number" b
 \begin{align*}
-	${0:${VISUAL}}
-\end{align*}
+	${1:${VISUAL:}}
+\end{align*}$0
 endsnippet
 
 #newline
@@ -142,20 +245,24 @@ $0
 endsnippet
 
 #sets
-snippet rR "real numbers" iA
+snippet RR "real numbers" iA
 \mathbb{R}$0
 endsnippet
 
-snippet nN "natural numbers" iA
+snippet NN "natural numbers" iA
 \mathbb{N}$0
 endsnippet
 
-snippet qQ "rational numbers" iA
+snippet QQ "rational numbers" iA
 \mathbb{Q}$0
 endsnippet
 
-snippet zZ "integers" iA
+snippet ZZ "integers" iA
 \mathbb{Z}$0
+endsnippet
+
+snippet mty "empty set"
+\emptyset
 endsnippet
 
 #infinity
@@ -163,7 +270,66 @@ snippet OO "infinity" iA
 \infty$0
 endsnippet
 
+snippet 00 "infinity" iA
+\infty$0
+endsnippet
 
+
+#higher level lin alg
+snippet <> "inner product" A
+\langle$1,$2\rangle $0
+endsnippet
+
+snippet ** "adjoint" iA
+^{*}
+endsnippet
+
+snippet Ox "otimes" iA
+\otimes
+endsnippet
+
+snippet cds "cdots" iA
+\cdots
+endsnippet
+
+snippet lds "ldots" iA
+\ldots
+endsnippet
+
+snippet cd. "cdot" iA
+\cdot
+endsnippet
+
+snippet ld. "ldot" iA
+\ldot
+endsnippet
+
+#measure theory
+snippet Lp "L^p" iA
+L^p
+endsnippet
+
+snippet L1 "L^1" iA
+L^1
+endsnippet
+
+snippet Linf "L^{\infty}" iA
+L^{\infty}
+endsnippet
+
+snippet ipi "p integral" iA
+\int_{$1} |$2|^p$0
+endsnippet
+
+priority 100
+snippet nrm "norm" iA
+\|${1:${VISUAL:}}\|$0
+endsnippet
+
+priority 10
+snippet pnrm "norm" iA
+\|${1:${VISUAL:}}\|_{p}$0
+endsnippet
 
 #template for problem/proof environmen
 snippet pppp "problem and proof env" bA
@@ -175,22 +341,145 @@ snippet pppp "problem and proof env" bA
 \end{proof} $0
 endsnippet
 
-#template for 207 problem/proof environments
-snippet pppr "problem proof with rudin" bA
-\begin{problem}
-	[Rudin Chapter $1 Problem $2]
-\end{problem}
-\begin{proof}
-	TODO
-\end{proof} $0
-endsnippet
-
-#linear alg crap
+#matrices
 snippet bmx "bmatrix" bA
 \begin{bmatrix}
 	$1
 \end{bmatrix}$0
 endsnippet
+
+snippet vmx "vmatrix" bA
+\begin{vmatrix}
+	$1
+\end{vmatrix}$0
+endsnippet
+
+snippet pmx "pmatrix" bA
+\begin{pmatrix}
+	$1
+\end{pmatrix}$0
+endsnippet
+
+#complex
+snippet "([^a-zA-Z])ee" "e^{}" riA
+`!p snip.rv = match.group(1)`e^{${1:${VISUAL:}}}$0
+endsnippet
+
+	
+#greeks
+snippet ;a "alpha" iA
+\alpha
+endsnippet
+
+snippet ;b "beta" iA
+\beta
+endsnippet
+
+snippet ;g "gamma" iA
+\gamma
+endsnippet
+
+snippet ;G "Gamma" iA
+\Gamma
+endsnippet
+
+snippet ;d "delta" iA
+\delta
+endsnippet
+
+snippet ;D "Delta" iA
+\Delta
+endsnippet
+
+snippet ;e "epsilon" iA
+\epsilon
+endsnippet
+
+snippet ;z "zeta" iA
+\zeta
+endsnippet
+
+#??????????
+snippet ;t "theta" iA
+\theta
+endsnippet
+
+snippet ;h "eta" iA
+\eta
+endsnippet
+
+snippet ;i "iota" iA
+\iota
+endsnippet
+
+snippet ;k "kappa" iA
+\kappa
+endsnippet
+
+snippet ;l "lambda" iA
+\lambda
+endsnippet
+
+snippet ;L "Lambda" iA
+\Lambda
+endsnippet
+
+snippet ;m "mu" iA
+\mu
+endsnippet
+
+snippet ;n "nu" iA
+\nu
+endsnippet
+
+snippet ;x "xi" iA
+\xi
+endsnippet
+
+snippet ;p "pi" iA
+\pi
+endsnippet
+
+snippet ;r "rho" iA
+\rho
+endsnippet
+
+snippet ;s "sigma" iA
+\sigma
+endsnippet
+
+snippet ;S "Sigma" iA
+\Sigma
+endsnippet
+
+snippet ;f "phi" iA
+\phi
+endsnippet
+
+snippet ;f "Phi" iA
+\Phi
+endsnippet
+
+snippet ;c "chi" iA
+\chi
+endsnippet
+
+snippet ;o "omega" iA
+\omega
+endsnippet
+
+snippet ;O "Omega" iA
+\Omega
+endsnippet
+
+snippet ;y "psi" iA
+\psi
+endsnippet
+
+snippet ;Y "Psi" iA
+\Psi
+endsnippet
+
 
 #master template for hw assignments
 
@@ -200,7 +489,8 @@ snippet templ "template" bA
 
 \geometry{letterpaper, margin=1in}
 
-\newcommand{\doctitle}{$1}
+\newcommand{\classtitle}{$1}
+\newcommand{\doctitle}{$2}
 \newcommand{\username}{Daniel Chen}
 
 \usepackage{fancyhdr}
@@ -217,11 +507,12 @@ snippet templ "template" bA
 \setlength{\footskip}{14.0pt}
 
 
-
+\theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{problem}{Problem}
+\newtheorem{lemma}{Lemma}
 
-\title{\doctitle}
+\title{\classtitle\;\doctitle}
 \author{\username}
 
 
@@ -230,8 +521,7 @@ snippet templ "template" bA
 \begin{document}
     \maketitle
     \begin{problem}
-    $0
+		$3
     \end{problem}
 \end{document}
-
 endsnippet
