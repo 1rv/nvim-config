@@ -99,7 +99,7 @@ else:
 `$2
 endsnippet
 
-snippet bg "bigg ({[" iA
+snippet bg "bigg ({[|" iA
 \bigg$1 $2\bigg`!p
 if t[1] == '{':
 	snip.rv = '}'
@@ -107,6 +107,8 @@ elif t[1] == '(':
 	snip.rv = ')'
 elif t[1] == '[':
 	snip.rv = ']'
+elif t[1] == '|':
+	snip.rv = '|'
 else:
 	snip.rv = ''
 `$0
