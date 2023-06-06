@@ -69,11 +69,25 @@ endsnippet
 
 #sum with limits
 snippet ss "\sum\limits_{}" A
-\sum\limits_{$1}$0
+\sum_{$1}$0
 endsnippet
 
 snippet ss "\sum\limits_{} tab" i
-\sum\limits_{$1}$0
+\sum_{$1}$0
+endsnippet
+
+#limits
+snippet "([^a-zA-z])ll" "limit don't expand in word" riA
+`!p snip.rv = match.group(1)`\lim_{$1}$0
+endsnippet
+
+snippet "([^a-zA-z])infll" "infinity limit" riA
+`!p snip.rv = match.group(1)`\lim_{$1\to\infty}$0
+endsnippet
+
+#for whatever reason, if you ned \limits for something,
+snippet limt "\limit" iA
+\limits_{$1}$0
 endsnippet
 
 #inline math with smart detection
@@ -100,7 +114,7 @@ else:
 endsnippet
 
 snippet bg "bigg ({[|" iA
-\bigg$1 $2\bigg`!p
+\bigg$1 ${2:${VISUAL}}\bigg`!p
 if t[1] == '{':
 	snip.rv = '}'
 elif t[1] == '(':
@@ -111,7 +125,7 @@ elif t[1] == '|':
 	snip.rv = '|'
 else:
 	snip.rv = ''
-`$0
+` $0
 endsnippet
 
 #normal text
@@ -159,27 +173,27 @@ endsnippet
 #logic
 
 snippet =- "implies" iA
-\implies
+\implies 
 endsnippet
 
 snippet -= "implied by" iA
-\impliedby
+\impliedby 
 endsnippet
 
 snippet === "iff" iA
-\iff
+\iff 
 endsnippet
 
 snippet neq "not equal" iA
-\neq
+\neq 
 endsnippet
 
 snippet leq "less equal" iA
-\leq
+\leq 
 endsnippet
 
 snippet geq "greater equal" iA
-\geq
+\geq 
 endsnippet
 
 #conjugate
@@ -248,34 +262,33 @@ endsnippet
 
 #sets
 snippet RR "real numbers" iA
-\mathbb{R}$0
+\mathbb{R}
 endsnippet
 
 snippet NN "natural numbers" iA
-\mathbb{N}$0
+\mathbb{N}
 endsnippet
 
 snippet QQ "rational numbers" iA
-\mathbb{Q}$0
+\mathbb{Q}
 endsnippet
 
 snippet ZZ "integers" iA
-\mathbb{Z}$0
+\mathbb{Z}
 endsnippet
 
 snippet mty "empty set"
-\emptyset
+\emptyset 
 endsnippet
 
 #infinity
 snippet OO "infinity" iA
-\infty$0
+\infty 
 endsnippet
 
-snippet 00 "infinity" iA
-\infty$0
+snippet "([^0-9])00" "infinity" riA
+`!p snip.rv = match.group(1)`\infty 
 endsnippet
-
 
 #higher level lin alg
 snippet <> "inner product" A
@@ -287,23 +300,23 @@ snippet ** "adjoint" iA
 endsnippet
 
 snippet Ox "otimes" iA
-\otimes
+\otimes 
 endsnippet
 
 snippet cds "cdots" iA
-\cdots
+\cdots 
 endsnippet
 
 snippet lds "ldots" iA
-\ldots
+\ldots 
 endsnippet
 
 snippet cd. "cdot" iA
-\cdot
+\cdot 
 endsnippet
 
 snippet ld. "ldot" iA
-\ldot
+\ldot 
 endsnippet
 
 #measure theory
@@ -370,116 +383,116 @@ endsnippet
 	
 #greeks
 snippet ;a "alpha" iA
-\alpha
+\alpha 
 endsnippet
 
 snippet ;b "beta" iA
-\beta
+\beta 
 endsnippet
 
 snippet ;g "gamma" iA
-\gamma
+\gamma 
 endsnippet
 
 snippet ;G "Gamma" iA
-\Gamma
+\Gamma 
 endsnippet
 
 snippet ;d "delta" iA
-\delta
+\delta 
 endsnippet
 
 snippet ;D "Delta" iA
-\Delta
+\Delta 
 endsnippet
 
 snippet ;e "epsilon" iA
-\epsilon
+\epsilon 
 endsnippet
 
 snippet ;z "zeta" iA
-\zeta
+\zeta 
 endsnippet
 
 #??????????
 snippet ;t "theta" iA
-\theta
+\theta 
 endsnippet
 
 snippet ;h "eta" iA
-\eta
+\eta 
 endsnippet
 
 snippet ;i "iota" iA
-\iota
+\iota 
 endsnippet
 
 snippet ;k "kappa" iA
-\kappa
+\kappa 
 endsnippet
 
 snippet ;l "lambda" iA
-\lambda
+\lambda 
 endsnippet
 
 snippet ;L "Lambda" iA
-\Lambda
+\Lambda 
 endsnippet
 
 snippet ;m "mu" iA
-\mu
+\mu 
 endsnippet
 
 snippet ;n "nu" iA
-\nu
+\nu 
 endsnippet
 
 snippet ;x "xi" iA
-\xi
+\xi 
 endsnippet
 
 snippet ;p "pi" iA
-\pi
+\pi 
 endsnippet
 
 snippet ;r "rho" iA
-\rho
+\rho 
 endsnippet
 
 snippet ;s "sigma" iA
-\sigma
+\sigma 
 endsnippet
 
 snippet ;S "Sigma" iA
-\Sigma
+\Sigma 
 endsnippet
 
 snippet ;f "phi" iA
-\phi
+\phi 
 endsnippet
 
 snippet ;f "Phi" iA
-\Phi
+\Phi 
 endsnippet
 
 snippet ;c "chi" iA
-\chi
+\chi 
 endsnippet
 
 snippet ;o "omega" iA
-\omega
+\omega 
 endsnippet
 
 snippet ;O "Omega" iA
-\Omega
+\Omega 
 endsnippet
 
 snippet ;y "psi" iA
-\psi
+\psi 
 endsnippet
 
 snippet ;Y "Psi" iA
-\Psi
+\Psi 
 endsnippet
 
 
