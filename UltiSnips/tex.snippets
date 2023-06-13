@@ -6,7 +6,7 @@ snippet beg "begin{} / end{}" bA
 endsnippet
 
 #fraction
-snippet f; "\frac{}{}" A
+snippet f; "\frac{}{}" iA
 \frac{$1}{$2}$0
 endsnippet
 
@@ -57,7 +57,9 @@ snippet -> "to" iA
 endsnippet
 
 #integral with limits 
-
+#all these shorcuts that are at risk of being expanded in word have two versions
+#one where if the letter preceeding is not a leter, then expand
+#one where if the letter preceeding is a letter, expand on tab
 priority 10
 snippet ii "\int_{} tab" i
 \int_{${1:${VISUAL}}}$0
@@ -68,32 +70,32 @@ snippet "([^\{i])ii" "\int_{} auto" riA
 `!p snip.rv = match.group(1)`\int_{${1:${VISUAL}}}$0
 endsnippet
 
-#partial
-snippet prt "partial" iA
-\\frac{\partial $1}{\partial $2}$0
-endsnippet
-
 #sum with limits
-snippet ss "\sum\limits_{}" A
-\sum_{$1}$0
-endsnippet
-
 snippet ss "\sum\limits_{} tab" i
 \sum_{$1}$0
 endsnippet
 
 #limits
+snippet ll "limit" i
+\lim_{$1}$0
+endsnippet
+
 snippet "([^a-zA-z])ll" "limit don't expand in word" riA
 `!p snip.rv = match.group(1)`\lim_{$1}$0
 endsnippet
 
-snippet "([^a-zA-z])infll" "infinity limit" riA
-`!p snip.rv = match.group(1)`\lim_{$1\to\infty}$0
+snippet infll "infinity limit" iA
+\lim_{$1\to\infty}$0
 endsnippet
 
 #for whatever reason, if you ned \limits for something,
 snippet limt "\limit" iA
 \limits_{$1}$0
+endsnippet
+
+#partial
+snippet prt "partial" iA
+\\frac{\partial $1}{\partial $2}$0
 endsnippet
 
 #inline math with smart detection
@@ -119,8 +121,33 @@ else:
 `$2
 endsnippet
 
-
 snippet bg "bigg ({[|" iA
+\big$1 ${VISUAL} \big`!p
+if t[1].startswith('g'):
+	if len(t[1]) == 1:
+		snip.rv = 'g'
+	elif t[1][1] == '(':
+		snip.rv = 'g)'
+	elif t[1][1] == '{':
+		snip.rv = 'g}'
+	elif t[1][1] == '[':
+		snip.rv = 'g]'
+	else:
+		snip.rv = 'g'
+else:
+	if t[1].startswith('('):
+		snip.rv = ')'
+	elif t[1].startswith('{'):
+		snip.rv = '}'
+	elif t[1].startswith('['):
+		snip.rv = ']'
+	else:
+		snip.rv = ''
+` $0
+endsnippet
+
+#deprecated version
+snippet bk "bigg ({[|" iA
 \big$1 ${2:${VISUAL}}\big`!p
 if t[1] == '{':
 	snip.rv = '}'
@@ -188,7 +215,6 @@ _{$1}$0
 endsnippet
 
 #logic
-
 snippet =- "implies" iA
 \implies 
 endsnippet
@@ -220,12 +246,12 @@ endsnippet
 
 #hat
 priority 10
-snippet "hat" "hat" riA
+snippet "hht" "hat" riA
 \hat{${1:${VISUAL}}}$0
 endsnippet
 
 priority 100
-snippet "([a-zA-Z])hat" "hat" riA
+snippet "([a-zA-Z])hht" "hat" riA
 \hat{`!p snip.rv = match.group(1)`}
 endsnippet
 
@@ -306,11 +332,18 @@ snippet ZZ "integers" iA
 \mathbb{Z}
 endsnippet
 
-snippet mty "empty set"
+snippet CC "complex numbers" iA
+\mathbb{C} 
+endsnippet
+
+snippet mty "empty set" iA
 \emptyset 
 endsnippet
 
-#infinity
+snippet inn "in" iA
+\in 
+endsnippet
+
 snippet OO "infinity" iA
 \infty 
 endsnippet
