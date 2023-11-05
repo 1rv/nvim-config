@@ -35,13 +35,13 @@ endsnippet
 
 #fonts
 priority 10
-snippet bld "bold" A
+snippet bld "bold" i
 \textbf{$1}$0
 endsnippet
 
 priority 100
 snippet "([a-zA-Z])bld" "bold" riA
-\bld{`!p snip.rv = match.group(1)`}
+\textbf{`!p snip.rv = match.group(1)`}
 endsnippet
 
 snippet itc "italicize" A
@@ -121,7 +121,7 @@ else:
 `$2
 endsnippet
 
-snippet bg "bigg ({[|" iA
+snippet bk "bigg ({[|" A
 \big$1 ${VISUAL} \big`!p
 if t[1].startswith('g'):
 	if len(t[1]) == 1:
@@ -132,6 +132,8 @@ if t[1].startswith('g'):
 		snip.rv = 'g}'
 	elif t[1][1] == '[':
 		snip.rv = 'g]'
+	elif t[1][1] == '|':
+		snip.rv = 'g|'
 	else:
 		snip.rv = 'g'
 else:
@@ -141,32 +143,10 @@ else:
 		snip.rv = '}'
 	elif t[1].startswith('['):
 		snip.rv = ']'
+	elif t[1].startswith('|'):
+		snip.rv = '|'
 	else:
 		snip.rv = ''
-` $0
-endsnippet
-
-#deprecated version
-snippet bk "bigg ({[|" iA
-\big$1 ${2:${VISUAL}}\big`!p
-if t[1] == '{':
-	snip.rv = '}'
-elif t[1] == '(':
-	snip.rv = ')'
-elif t[1] == '[':
-	snip.rv = ']'
-elif t[1] == '|':
-	snip.rv = '|'
-elif t[1] == 'g{':
-	snip.rv = 'g}'
-elif t[1] == 'g(':
-	snip.rv = 'g)'
-elif t[1] == 'g[':
-	snip.rv = 'g]'
-elif t[1] == 'g|':
-	snip.rv = 'g|'
-else:
-	snip.rv = ''
 ` $0
 endsnippet
 
@@ -227,20 +207,20 @@ snippet === "iff" iA
 \iff 
 endsnippet
 
-snippet neq "not equal" iA
-\neq 
+snippet "([^i^\\])neq" "not equal" riA
+`!p snip.rv = match.group(1)`\neq 
 endsnippet
 
-snippet leq "less equal" iA
-\leq 
+snippet "([^\\])leq" "less equal" riA
+`!p snip.rv = match.group(1)`\leq 
 endsnippet
 
-snippet geq "greater equal" iA
-\geq 
+snippet "([^\\])geq" "greater equal" riA
+`!p snip.rv = match.group(1)`\geq 
 endsnippet
 
 #conjugate
-snippet bar "overbar" A
+snippet bar "overbar" i
 \overline{$1}$0
 endsnippet
 
@@ -320,6 +300,16 @@ snippet RR "real numbers" iA
 \mathbb{R}
 endsnippet
 
+priority 10
+snippet "(\\mathbb{R})n" "auto Rn" wrA
+`!p snip.rv = match.group(1)`^n
+endsnippet
+
+priority 10
+snippet "(\\mathbb{R})d" "auto Rd" wrA
+`!p snip.rv = match.group(1)`^d
+endsnippet
+
 snippet NN "natural numbers" iA
 \mathbb{N}
 endsnippet
@@ -377,7 +367,7 @@ snippet cds "cdots" iA
 \cdots 
 endsnippet
 
-snippet lds "ldots" iA
+snippet lds "ldots" i
 \ldots 
 endsnippet
 
@@ -392,6 +382,10 @@ endsnippet
 #measure theory
 snippet Lp "L^p" iA
 L^p
+endsnippet
+
+snippet Lq "L^q" iA
+L^q
 endsnippet
 
 priority 100
@@ -542,7 +536,7 @@ snippet ;f "phi" iA
 \phi 
 endsnippet
 
-snippet ;f "Phi" iA
+snippet ;F "Phi" iA
 \Phi 
 endsnippet
 
