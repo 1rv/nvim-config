@@ -27,7 +27,7 @@ ls.add_snippets("tex", {
         {t("\\Gamma"),}
     ),
     s({trig=";d", snippetType="autosnippet", wordTrig=false},
-        {t("\\Delta"),}
+        {t("\\delta"),}
     ),
     s({trig=";D", snippetType="autosnippet", wordTrig=false},
         {t("\\Delta"),}
@@ -71,6 +71,9 @@ ls.add_snippets("tex", {
     s({trig=";p", snippetType="autosnippet", wordTrig=false},
         {t("\\pi"),}
     ),
+    s({trig=";P", snippetType="autosnippet", wordTrig=false},
+        {t("\\Pi"),}
+    ),
     s({trig=";r", snippetType="autosnippet", wordTrig=false},
         {t("\\rho"),}
     ),
@@ -92,6 +95,9 @@ ls.add_snippets("tex", {
     s({trig=";o", snippetType="autosnippet", wordTrig=false},
         {t("\\omega"),}
     ),
+    s({trig=";w", snippetType="autosnippet", wordTrig=false},
+        {t("\\omega"),}
+    ),
     s({trig=";O", snippetType="autosnippet", wordTrig=false},
         {t("\\Omega"),}
     ),
@@ -103,53 +109,85 @@ ls.add_snippets("tex", {
     ),
     -- set symbols
     s({trig="NN", snippetType="autosnippet", wordTrig=false},
-        {t("\\mathbb{N})"),}
+        {t("\\mathbb{N}"),},
+        {condition = in_mathzone}
     ),
     s({trig="RR", snippetType="autosnippet", wordTrig=false},
-        {t("\\mathbb{R})"),}
+        {t("\\mathbb{R}"),},
+        {condition = in_mathzone}
     ),
     s({trig="QQ", snippetType="autosnippet", wordTrig=false},
-        {t("\\mathbb{Q})"),}
+        {t("\\mathbb{Q}"),},
+        {condition = in_mathzone}
     ),
     s({trig="ZZ", snippetType="autosnippet", wordTrig=false},
-        {t("\\mathbb{Z})"),}
+        {t("\\mathbb{Z}"),},
+        {condition = in_mathzone}
     ),
     s({trig="CC", snippetType="autosnippet", wordTrig=false},
-        {t("\\mathbb{C})"),}
+        {t("\\mathbb{C}"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="EE", snippetType="autosnippet", wordTrig=false},
+        {t("\\mathbb{E}"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="TT", snippetType="autosnippet", wordTrig=false},
+        {t("\\mathscr{T}"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="BB", snippetType="autosnippet", wordTrig=false},
+        {t("\\mathscr{B}"),},
+        {condition = in_mathzone}
     ),
     s({trig="sbs", snippetType="autosnippet", wordTrig=false},
-        {t("\\subset"),}
+        {t("\\subset"),},
+        {condition = in_mathzone}
     ),
     s({trig="sps", snippetType="autosnippet", wordTrig=false},
-        {t("\\supset"),}
+        {t("\\supset"),},
+        {condition = in_mathzone}
     ),
     -- other symbols
     s({trig="OO", snippetType="autosnippet", wordTrig=false},
-        {t("\\infty"),}
+        {t("\\infty"),},
+        {condition = in_mathzone}
     ),
     s({trig="sr;", snippetType="autosnippet", wordTrig=false},
-        {t("^2"),}
+        {t("^2"),},
+        {condition = in_mathzone}
     ),
     s({trig="invs", snippetType="autosnippet", wordTrig=false},
-        {t("^{-1}"),}
+        {t("^{-1}"),},
+        {condition = in_mathzone}
     ),
     s({trig="cb", snippetType="autosnippet", wordTrig=false},
-        {t("^3"),}
+        {t("^3"),},
+        {condition = in_mathzone}
     ),
     s({trig="**", snippetType="autosnippet", wordTrig=false},
-        {t("^*"),}
+        {t("^*"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="tsp", snippetType="autosnippet", wordTrig=false},
+        {t("^T"),},
+        {condition = in_mathzone}
     ),
     s({trig="-=", snippetType="autosnippet", wordTrig=false},
-        {t("\\implies"),}
+        {t("\\implies"),},
+        {condition = in_mathzone}
     ),
     s({trig="=-", snippetType="autosnippet", wordTrig=false},
-        {t("\\impliedby"),}
+        {t("\\impliedby"),},
+        {condition = in_mathzone}
     ),
     s({trig="===", snippetType="autosnippet", wordTrig=false},
-        {t("\\iff"),}
+        {t("\\iff"),},
+        {condition = in_mathzone}
     ),
     s({trig="---", snippetType="autosnippet", wordTrig=false},
-        {t("\\equiv"),}
+        {t("\\equiv"),},
+        {condition = in_mathzone}
     ),
     --dots
     s({trig="cds", snippetType="autosnippet", wordTrig=false},
@@ -168,9 +206,25 @@ ls.add_snippets("tex", {
         {t("\\ldot"),},
         {condition = in_mathzone}
     ),
+    s({trig="vds", snippetType="autosnippet", wordTrig=false},
+        {t("\\vdots"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="vd.", snippetType="autosnippet", wordTrig=false},
+        {t("\\ldot"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="dds", snippetType="autosnippet", wordTrig=false},
+        {t("\\ddots"),},
+        {condition = in_mathzone}
+    ),
     --wordTrig true 
     s({trig="inn", snippetType="autosnippet"},
         {t("\\in"),},
+        {condition = in_mathzone}
+    ),
+    s({trig="ninn", snippetType="autosnippet"},
+        {t("\\notin"),},
         {condition = in_mathzone}
     ),
     s({trig="mty", snippetType="autosnippet"},

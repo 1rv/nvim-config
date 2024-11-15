@@ -9,6 +9,7 @@ local c = ls.choice_node
 local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
+local postfix = require("luasnip.extras.postfix").postfix
 
 local get_visual = function(args, parent)
   if (#parent.snippet.env.LS_SELECT_RAW > 0) then
@@ -44,6 +45,27 @@ local function bkhelp(args, parent, user_args)
     return ret
 end
 
+
+local generate_matrix = function(args, snip)
+	local rows = tonumber(snip.captures[2])
+	local cols = tonumber(snip.captures[3])
+	local nodes = {}
+	local ins_indx = 1
+	for j = 1, rows do
+		table.insert(nodes, r(ins_indx, tostring(j) .. "x1", i(1)))
+		ins_indx = ins_indx + 1
+		for k = 2, cols do
+			table.insert(nodes, t(" & "))
+			table.insert(nodes, r(ins_indx, tostring(j) .. "x" .. tostring(k), i(1)))
+			ins_indx = ins_indx + 1
+		end
+		table.insert(nodes, t({ "\\\\", "" }))
+	end
+	-- fix last node.
+	nodes[#nodes] = t("\\\\")
+	return sn(nil, nodes)
+end
+
 ls.add_snippets("tex", {
     s({trig="n;", snippetType="autosnippet"},
         {t("\\newline"),}
@@ -63,10 +85,56 @@ ls.add_snippets("tex", {
         fmta("$<>$", {i(1)})
     ),
     s({trig="mj", snippetType="autosnippet", wordTrig=false},
-        fmta("\\{<>\\}", {i(1)})
+        fmta("\\{<>\\}", {d(1, get_visual)})
     ),
     s({trig="mss", snippetType="autosnippet", wordTrig=false},
         fmta("$\\{<>\\}$", {i(1)})
+    ),
+
+    --auto char modification and char modification
+    s({trig = '(%a)ht', regTrig=true, snippetType="autosnippet", wordTrig=false}, 
+        fmta([[\hat{<>}]],
+            { f(function(_, snip) return snip.captures[1] end)}),
+        {condition = in_mathzone}
+    ),
+    s({trig = '(%a)dt', regTrig=true, snippetType="autosnippet", wordTrig=false}, 
+        fmta([[\dot{<>}]],
+            { f(function(_, snip) return snip.captures[1] end)}),
+        {condition = in_mathzone}
+    ),
+    s({trig = '(%a)ovl', regTrig=true, snippetType="autosnippet", wordTrig=false}, 
+        fmta([[\overline{<>}]],
+            { f(function(_, snip) return snip.captures[1] end)}),
+        {condition = in_mathzone}
+    ),
+    s({trig = '(%a)twd', regTrig=true, snippetType="autosnippet", wordTrig=false}, 
+        fmta([[\tilde{<>}]],
+            { f(function(_, snip) return snip.captures[1] end)}),
+        {condition = in_mathzone}
+    ),
+    s({trig="ht", snippetType="autosnippet", wordTrig=false},
+        fmta("\\hat{<>}",
+            {
+                d(1, get_visual)
+            }
+        ),
+        {condition = in_mathzone}
+    ),
+    s({trig="dt", snippetType="autosnippet", wordTrig=false},
+        fmta("\\dot{<>}",
+            {
+                d(1, get_visual)
+            }
+        ),
+        {condition = in_mathzone}
+    ),
+    s({trig="ovl", snippetType="autosnippet", wordTrig=false},
+        fmta("\\overline{<>}",
+            {
+                d(1, get_visual)
+            }
+        ),
+        {condition = in_mathzone}
     ),
     --auto subscript
     s({ trig='(%a)(%d)', regTrig=true, dscr='auto subscript', snippetType="autosnippet", priority=100},
@@ -103,7 +171,8 @@ ls.add_snippets("tex", {
             {
                 d(1, get_visual)
             }
-        )
+        ),
+        {condition = in_mathzone}
     ),
     s({trig="mca", snippetType="autosnippet", wordTrig=false},
         fmta("\\mathcal{<>}",
@@ -115,6 +184,14 @@ ls.add_snippets("tex", {
     ),
     s({trig="mbb", snippetType="autosnippet", wordTrig=false},
         fmta("\\mathbb{<>}",
+            {
+                d(1, get_visual)
+            }
+        ),
+        {condition = in_mathzone}
+    ),
+    s({trig="msc", snippetType="autosnippet", wordTrig=false},
+        fmta("\\mathscr{<>}",
             {
                 d(1, get_visual)
             }
@@ -219,6 +296,39 @@ ls.add_snippets("tex", {
         ),
         {condition = in_mathzone}
     ),
+    --matrices
+    s({trig = "([bBpvV])mx(%d+)x(%d+)", name = "[bBpvV]matrix", dscr = "matrices", regTrig = true, hidden = true, snippetType="autosnippet", wordTrig=false},
+        fmta([[
+        \begin{<>}
+        <>
+        \end{<>}]],
+        {
+            f(function(_, snip)
+                return snip.captures[1] .. "matrix"
+            end),
+            d(1, generate_matrix),
+            f(function(_, snip)
+                return snip.captures[1] .. "matrix"
+            end)
+        }),
+        {condition = in_mathzone}
+    ),
+    s({trig = "([bBpvV])mx", name = "[bBpvV]matrix", dscr = "matrices", regTrig = true, hidden = true, wordTrig=false},
+        fmta([[
+        \begin{<>}
+            <>
+        \end{<>}]],
+        {
+            f(function(_, snip)
+                return snip.captures[1] .. "matrix"
+            end),
+            i(1),
+            f(function(_, snip)
+                return snip.captures[1] .. "matrix"
+            end)
+        }),
+        {condition = in_mathzone}
+    ),
 
     --auto backslash
     s({trig="sin", snippetType="autosnippet", wordTrig=false},
@@ -249,8 +359,8 @@ ls.add_snippets("tex", {
         {t("\\ast")},
         {condition = in_mathzone}
     ),
-    s({trig="ast", snippetType="autosnippet", wordTrig=false},
-        {t("\\ast")},
+    s({trig="dag", snippetType="autosnippet", wordTrig=false},
+        {t("\\dag")},
         {condition = in_mathzone}
     ),
     s({trig="sup", snippetType="autosnippet", wordTrig=false},
@@ -277,11 +387,11 @@ ls.add_snippets("tex", {
         {t("\\max")},
         {condition = in_mathzone}
     ),
-    s({trig="min", snippetType="autosnippet", wordTrig=false},
+    s({trig="min", snippetType="autosnippet"},
         {t("\\min")},
         {condition = in_mathzone}
     ),
-    s({trig="im", snippetType="autosnippet", wordTrig=false},
+    s({trig="img", snippetType="autosnippet",}, --things like simeq will trig
         {t("\\im")},
         {condition = in_mathzone}
     ),
@@ -289,7 +399,7 @@ ls.add_snippets("tex", {
         {t("\\ker")},
         {condition = in_mathzone}
     ),
-    s({trig="St", snippetType="autosnippet", wordTrig=false},
+    s({trig="sta", snippetType="autosnippet", wordTrig=false},
         {t("\\St")},
         {condition = in_mathzone}
     ),

@@ -88,6 +88,7 @@ ls.add_snippets("tex", {
                 \DeclareMathOperator{\im}{im}
                 \DeclareMathOperator{\tr}{tr}
                 \DeclareMathOperator{\nul}{null}
+                \DeclareMathOperator{\Span}{span}
                 <>
             ]],
             {i(0)}
@@ -101,6 +102,18 @@ ls.add_snippets("tex", {
                 \DeclareMathOperator{\Aut}{Aut}
                 \DeclareMathOperator{\Out}{Out}
                 \DeclareMathOperator{\im}{im}
+                <>
+            ]],
+            {i(0)}
+        ),
+        {condition = line_begin}
+    ),
+    s({trig = "complextempl", dscr="algebra math operators", snippetType = "autosnippet"}, 
+        fmta(
+            [[
+                \DeclareMathOperator{\res}{res}
+                \DeclareMathOperator{\re}{Re}
+                \DeclareMathOperator{\im}{Im}
                 <>
             ]],
             {i(0)}
@@ -139,6 +152,7 @@ ls.add_snippets("tex", {
                 \newtheorem{theorem}{Theorem}[section]
                 \newtheorem{problem}{Problem}
                 \newtheorem{lemma}{Lemma}
+                \newtheorem{definition}{Definition}
 
                 \title{\classtitle\;\doctitle}
                 \author{\username}
